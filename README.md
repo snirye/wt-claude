@@ -4,10 +4,28 @@ CLI tool to manage git worktrees with Claude Code integration.
 
 ## Installation
 
+### Prerequisites
+
+- Node.js 18+ and npm
+- Git
+- Claude Code CLI available on your `PATH`
+- iTerm2 (optional, for automatic tab opening on macOS)
+
+### Option 1: Run directly from GitHub with npx
+
 ```bash
+npx github:snirye/wt-claude --help
+```
+
+### Option 2: Install from source
+
+```bash
+git clone <your-repo-url>
+cd wt-claude
 npm install
 npm run build
 npm link
+wt --help
 ```
 
 ## Usage

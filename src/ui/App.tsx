@@ -163,7 +163,7 @@ export function App(): JSX.Element {
   }
 
   useKeyboard((input, key) => {
-    if ((key.ctrl && input === "c") || input === "q") {
+    if (key.ctrl && input === "c") {
       exit();
       return;
     }
@@ -197,7 +197,7 @@ export function App(): JSX.Element {
       return;
     }
 
-    if (input === "r" && viewMode !== "create-worktree") {
+    if (key.ctrl && input === "r" && viewMode !== "create-worktree") {
       void refreshRepos();
       void refreshWorktrees();
       setNotice("Refreshed");
@@ -260,6 +260,11 @@ export function App(): JSX.Element {
         setPendingDeleteWorktree(selectedWorktree);
         setNotice(`Confirm delete ${selectedWorktree.branch}? Enter confirm, Esc cancel`);
       }
+      return;
+    }
+
+    if (viewMode === "repo-menu" && key.escape) {
+      exit();
       return;
     }
 

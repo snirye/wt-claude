@@ -18,9 +18,16 @@ const CONFIG_DIR = join(homedir(), ".wt-claude");
 const CONFIG_FILE = join(CONFIG_DIR, "config.json");
 const WORKTREES_DIR = join(CONFIG_DIR, "worktrees");
 
+const DEFAULT_SYSTEM_PROMPT = `You are working inside a git worktree — an isolated working directory tied to a specific feature branch. The main repository checkout exists elsewhere; do not modify it.
+
+- You are on a feature branch. Stay on it — never switch to main/master.
+- Keep commits focused and atomic. Each commit should represent a single logical change.
+- When the work is ready, create a pull request with a concise summary and test plan.
+- Start by understanding the task on this branch. If the branch name or initial prompt hints at the goal, confirm your understanding before diving in.`;
+
 const DEFAULT_CONFIG: Config = {
   repositories: [],
-  systemPrompt: "",
+  systemPrompt: DEFAULT_SYSTEM_PROMPT,
   worktreesDir: WORKTREES_DIR,
 };
 

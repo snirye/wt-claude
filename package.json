@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "CLI tool to manage git worktrees with Claude Code integration",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "dist/index.js",
   "bin": {
     "wt": "./dist/index.js"

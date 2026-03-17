@@ -3,7 +3,7 @@ import search from "@inquirer/search";
 import chalk from "chalk";
 import { getRepositories, type Repository } from "./config.js";
 import { listWorktrees, createWorktree, type Worktree } from "./git.js";
-import { openInITerm2 } from "./terminal/iterm2.js";
+import { openInTerminal } from "./terminal/iterm2.js";
 import {
   buildResumeCommand,
   buildNewSessionCommand,
@@ -149,7 +149,7 @@ async function openWorktreeInTerminal(worktreePath: string): Promise<void> {
   const command = await buildResumeCommand();
   console.log(chalk.gray(`Running: ${command}`));
 
-  await openInITerm2(worktreePath, command);
+  await openInTerminal(worktreePath, command);
   console.log(chalk.green("✓ Opened in new iTerm2 tab"));
 }
 
@@ -184,7 +184,7 @@ async function handleCreateWorktree(repo: Repository): Promise<void> {
     const command = await buildNewSessionCommand(improvedPrompt);
     console.log(chalk.gray(`Running: ${command.substring(0, 80)}...`));
 
-    await openInITerm2(worktreePath, command);
+    await openInTerminal(worktreePath, command);
     console.log(chalk.green("✓ Opened in new iTerm2 tab with Claude"));
   } catch (error) {
     if (error instanceof Error) {

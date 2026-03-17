@@ -1,4 +1,7 @@
-import { getSystemPrompt } from "./config.js";
+import { getSystemPromptFilePath } from "./config.js";
+import { existsSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 export interface ImprovedPromptResult {
   improvedPrompt: string;
@@ -6,23 +9,17 @@ export interface ImprovedPromptResult {
 }
 
 export async function buildResumeCommand(): Promise<string> {
-  const systemPrompt = await getSystemPrompt();
-  if (systemPrompt) {
-    const escapedPrompt = systemPrompt.replace(/'/g, "'\\''");
-    return `claude --resume --system-prompt '${escapedPrompt}'`;
-  }
-  return "claude --resume";
+  const systemPromptFilePath = await getSystemPromptFilePath();
+  const scriptPath = join(getScriptsDir(), "resume.sh");
+
+  return `bash ${shellQuote(scriptPath)} --system-prompt-path ${shellQuote(systemPromptFilePath)}`;
 }
 
 export async function buildNewSessionCommand(prompt: string): Promise<string> {
-  const systemPrompt = await getSystemPrompt();
-  const escapedPrompt = prompt.replace(/'/g, "'\\''");
+  const systemPromptFilePath = await getSystemPromptFilePath();
+  const scriptPath = join(getScriptsDir(), "new-feature.sh");
 
-  if (systemPrompt) {
-    const escapedSystemPrompt = systemPrompt.replace(/'/g, "'\\''");
-    return `claude -p '${escapedPrompt}' --system-prompt '${escapedSystemPrompt}'`;
-  }
-  return `claude -p '${escapedPrompt}'`;
+  return `bash ${shellQuote(scriptPath)} --system-prompt-path ${shellQuote(systemPromptFilePath)} --prompt ${shellQuote(prompt)}`;
 }
 
 export function deriveBranchAndPrompt(userPrompt: string): ImprovedPromptResult {
@@ -50,4 +47,20 @@ function deriveBranchFromPrompt(prompt: string): string {
     .slice(0, 4);
 
   return `feature/${words.join("-") || "new-feature"}`;
+}
+
+function getScriptsDir(): string {
+  const currentFilePath = fileURLToPath(import.meta.url);
+  const currentDir = dirname(currentFilePath);
+
+  const distCandidate = join(currentDir, "scripts");
+  if (existsSync(distCandidate)) {
+    return distCandidate;
+  }
+
+  return join(currentDir, "..", "scripts");
+}
+
+function shellQuote(value: string): string {
+  return `'${value.replace(/'/g, "'\\''")}'`;
 }

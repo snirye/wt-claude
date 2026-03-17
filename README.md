@@ -64,7 +64,7 @@ wt config system-prompt
 
 ## Configuration
 
-Configuration is stored at `~/.wt-claude/config.json`.
+Configuration is stored at `~/.wt-claude/wt-config.json`.
 
 Worktrees are stored under `~/.wt-claude/worktrees/<repo-name>/<branch>/` to keep your development directories clean.
 

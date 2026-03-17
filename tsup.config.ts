@@ -7,6 +7,8 @@ export default defineConfig({
   clean: true,
   dts: true,
   shims: true,
+  onSuccess:
+    "node --input-type=module -e \"import { cpSync, mkdirSync } from 'node:fs'; mkdirSync('dist', { recursive: true }); cpSync('scripts', 'dist/scripts', { recursive: true });\"",
   banner: {
     js: "#!/usr/bin/env node",
   },

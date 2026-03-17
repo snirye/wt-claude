@@ -7,7 +7,7 @@ import {
   deriveBranchAndPrompt,
 } from "../claude.js";
 import { createWorktree, deleteLocalBranch, removeWorktree, type Worktree } from "../git.js";
-import { openInITerm2 } from "../terminal/iterm2.js";
+import { openInTerminal } from "../terminal/iterm2.js";
 import { CreateWorktree } from "./components/CreateWorktree.js";
 import { Header } from "./components/Header.js";
 import { Panel } from "./components/Panel.js";
@@ -97,7 +97,7 @@ export function App(): JSX.Element {
     setNotice(null);
     try {
       const command = await buildResumeCommand();
-      await openInITerm2(selectedWorktree.path, command);
+      await openInTerminal(selectedWorktree.path, command);
       setNotice(`Opened ${selectedWorktree.branch} in iTerm2`);
     } catch (error) {
       if (error instanceof Error) {
@@ -119,7 +119,7 @@ export function App(): JSX.Element {
 
       const worktreePath = await createWorktree(selectedRepo.path, branchName);
       const command = await buildNewSessionCommand(improvedPrompt);
-      await openInITerm2(worktreePath, command);
+      await openInTerminal(worktreePath, command);
       await refreshWorktrees();
       setFeatureDescription("");
       setViewMode("branch-menu");
